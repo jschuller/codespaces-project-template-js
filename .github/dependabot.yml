@@ -1,0 +1,12 @@
+# Dependabot version updates (homelab-governance supply-chain baseline, 2026-10-20). Every ecosystem waits out a 7-day
+# cooldown; npm also waits 14 days for a semver-major bump.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: monthly }
+    cooldown: { default-days: 7 }
+  - package-ecosystem: npm # package.json and package-lock.json
+    directory: /
+    schedule: { interval: monthly }
+    cooldown: { default-days: 7, semver-major-days: 14 }

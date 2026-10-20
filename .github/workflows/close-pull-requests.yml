@@ -1,19 +1,30 @@
 name: Auto close pull requests
+# Inherited from the education/ template. Supply-chain baseline (homelab-governance, 2026-10-20): the checkout is pinned
+# to a full commit SHA with its exact tag and keeps no token, the PR number reaches the script through env: (not ${{ }}
+# inside run:), and the job gets only pull-requests: write. pull_request_target runs this file from the default branch
+# with the base commit checked out; no code from the pull request is checked out or run.
 on:
   pull_request_target:
     types: [opened, labeled, unlabeled, reopened]
 
+permissions: {}
+
 jobs:
   auto_close:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2.8.0
+      with:
+        persist-credentials: false
       
     - name: Close PR if not pre-approved
       if: ${{ !(contains(github.event.pull_request.labels.*.name, 'pre-approved')) && !(contains(github.event.pull_request.body, 'alfredodeza')) }}
       run: |
         MESSAGE="This repository doesn't accept pull requests. Please fork the repository and make changes there. If you really need this PR to be merged you must be an admin and label this pr with the 'pre-approved' label *or* tag Alfredo Deza (`@alfredodeza`) to take a look."
-        gh pr close ${{ github.event.pull_request.number }} --repo education/codespaces-project-template-js --comment "$MESSAGE"
+        gh pr close "$PR_NUMBER" --repo education/codespaces-project-template-js --comment "$MESSAGE"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
