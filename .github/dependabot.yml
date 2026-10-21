@@ -1,11 +1,9 @@
 # Dependabot version updates (homelab-governance supply-chain baseline, 2026-10-20). Every ecosystem waits out a 7-day
 # cooldown; npm also waits 14 days for a semver-major bump.
+# No github-actions entry: the repository has no workflows since close-pull-requests.yml was removed (2026-10-20).
+# Add one back, with `cooldown: { default-days: 7 }`, together with the next workflow.
 version: 2
 updates:
-  - package-ecosystem: github-actions
-    directory: /
-    schedule: { interval: monthly }
-    cooldown: { default-days: 7 }
   - package-ecosystem: npm # package.json and package-lock.json
     directory: /
     schedule: { interval: monthly }
