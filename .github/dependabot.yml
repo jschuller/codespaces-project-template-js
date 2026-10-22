@@ -2,9 +2,12 @@
 # cooldown; npm also waits 14 days for a semver-major bump.
 # No github-actions entry: the repository has no workflows since close-pull-requests.yml was removed (2026-10-20).
 # Add one back, with `cooldown: { default-days: 7 }`, together with the next workflow.
+# Grouping (homelab-governance, 2026-10-22): one pull request per ecosystem per run, majors included, so a quiet repository
+# gets a few PRs a month instead of one per dependency. Review a grouped PR as a whole; the cooldown still applies to each update.
 version: 2
 updates:
   - package-ecosystem: npm # package.json and package-lock.json
     directory: /
     schedule: { interval: monthly }
     cooldown: { default-days: 7, semver-major-days: 14 }
+    groups: { npm: { patterns: ["*"] } }
